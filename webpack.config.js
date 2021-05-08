@@ -2,11 +2,20 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     index: './src/index.js',
     print: './src/print.js'
   },
+  // TODO 源码映射，但不起作用
+  devtool: 'inline-source-map',
+  // 文件修改时，自动刷新浏览器
+  devServer: {
+    contentBase: './dist'
+  },
+  plugins: [
+    new HtmlWebpackPlugin({title: 'Development'})
+  ],
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
@@ -31,7 +40,9 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new HtmlWebpackPlugin({title: '管理输出'})
-  ]
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  }
 }
